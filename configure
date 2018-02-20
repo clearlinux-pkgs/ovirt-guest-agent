@@ -1,0 +1,3 @@
+--without-gdm
+--without-kdm
+--sysconfdir=/usr/share/defaults/ovirt-guest-agent
