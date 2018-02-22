@@ -4,7 +4,7 @@
 #
 Name     : ovirt-guest-agent
 Version  : 1.0.14
-Release  : 1
+Release  : 2
 URL      : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Source0  : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Summary  : The oVirt Guest Agent
@@ -63,10 +63,11 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1519085319
+export SOURCE_DATE_EPOCH=1519333698
 %autogen --disable-static --without-gdm \
 --without-kdm \
---sysconfdir=/usr/share/defaults/ovirt-guest-agent
+--sysconfdir=/usr/share/defaults/ovirt-guest-agent \
+--with-pam-prefix=/usr/share/pam.d
 make  %{?_smp_mflags}
 
 %check
@@ -77,7 +78,7 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1519085319
+export SOURCE_DATE_EPOCH=1519333698
 rm -rf %{buildroot}
 %make_install
 
@@ -94,12 +95,6 @@ rm -rf %{buildroot}
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent.conf
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent/hooks.d/before_hibernation/55_flush-caches
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent/hooks.d/before_migration/55_flush-caches
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-container-list
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-flush-caches
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-hibernate
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-locksession
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-logout
-/usr/share/defaults/ovirt-guest-agent/pam.d/ovirt-shutdown
 /usr/share/defaults/ovirt-guest-agent/security/console.apps/ovirt-container-list
 /usr/share/defaults/ovirt-guest-agent/security/console.apps/ovirt-flush-caches
 /usr/share/defaults/ovirt-guest-agent/security/console.apps/ovirt-hibernate
@@ -138,6 +133,12 @@ rm -rf %{buildroot}
 /usr/share/ovirt-guest-agent/scripts/hooks/defaults/55-flush-caches.consolehelper
 /usr/share/ovirt-guest-agent/scripts/hooks/defaults/flush-caches
 /usr/share/ovirt-guest-agent/timezone.py
+/usr/share/pam.d/pam.d/ovirt-container-list
+/usr/share/pam.d/pam.d/ovirt-flush-caches
+/usr/share/pam.d/pam.d/ovirt-hibernate
+/usr/share/pam.d/pam.d/ovirt-locksession
+/usr/share/pam.d/pam.d/ovirt-logout
+/usr/share/pam.d/pam.d/ovirt-shutdown
 
 %files lib
 %defattr(-,root,root,-)

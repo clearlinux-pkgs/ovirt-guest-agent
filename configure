@@ -1,3 +1,4 @@
 --without-gdm
 --without-kdm
 --sysconfdir=/usr/share/defaults/ovirt-guest-agent
+--with-pam-prefix=/usr/share/pam.d
