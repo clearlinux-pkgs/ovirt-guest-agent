@@ -1,0 +1,3 @@
+mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
+mv %{buildroot}/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf \
+   %{buildroot}/usr/share/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf

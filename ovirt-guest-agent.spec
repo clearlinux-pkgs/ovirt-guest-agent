@@ -4,7 +4,7 @@
 #
 Name     : ovirt-guest-agent
 Version  : 1.0.14
-Release  : 2
+Release  : 3
 URL      : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Source0  : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Summary  : The oVirt Guest Agent
@@ -63,7 +63,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1519333698
+export SOURCE_DATE_EPOCH=1519407421
 %autogen --disable-static --without-gdm \
 --without-kdm \
 --sysconfdir=/usr/share/defaults/ovirt-guest-agent \
@@ -78,9 +78,14 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1519333698
+export SOURCE_DATE_EPOCH=1519407421
 rm -rf %{buildroot}
 %make_install
+## make_install_append content
+mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
+mv %{buildroot}/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf \
+%{buildroot}/usr/share/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf
+## make_install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -91,7 +96,7 @@ rm -rf %{buildroot}
 
 %files data
 %defattr(-,root,root,-)
-/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf
+/usr/share/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent.conf
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent/hooks.d/before_hibernation/55_flush-caches
 /usr/share/defaults/ovirt-guest-agent/ovirt-guest-agent/hooks.d/before_migration/55_flush-caches
