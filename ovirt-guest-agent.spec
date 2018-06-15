@@ -19,7 +19,7 @@ BuildRequires : gdm-dev
 BuildRequires : pkgconfig(dbus-glib-1)
 BuildRequires : pkgconfig(gobject-2.0)
 BuildRequires : pkgconfig(gtk+-2.0)
-BuildRequires : python-dev
+
 BuildRequires : python3-dev
 BuildRequires : systemd-dev
 
