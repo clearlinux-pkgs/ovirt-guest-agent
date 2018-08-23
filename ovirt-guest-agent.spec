@@ -4,7 +4,7 @@
 #
 Name     : ovirt-guest-agent
 Version  : 1.0.14
-Release  : 6
+Release  : 7
 URL      : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Source0  : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.14.tar.gz
 Summary  : The oVirt Guest Agent
@@ -13,13 +13,16 @@ License  : Apache-2.0
 Requires: ovirt-guest-agent-config
 Requires: ovirt-guest-agent-lib
 Requires: ovirt-guest-agent-data
+Requires: ovirt-guest-agent-license
 BuildRequires : Linux-PAM-dev
-BuildRequires : cmake
+BuildRequires : buildreq-cmake
 BuildRequires : gdm-dev
+BuildRequires : nose
+BuildRequires : pep8
 BuildRequires : pkgconfig(dbus-glib-1)
 BuildRequires : pkgconfig(gobject-2.0)
 BuildRequires : pkgconfig(gtk+-2.0)
-
+BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : systemd-dev
 
@@ -50,9 +53,18 @@ data components for the ovirt-guest-agent package.
 Summary: lib components for the ovirt-guest-agent package.
 Group: Libraries
 Requires: ovirt-guest-agent-data
+Requires: ovirt-guest-agent-license
 
 %description lib
 lib components for the ovirt-guest-agent package.
+
+
+%package license
+Summary: license components for the ovirt-guest-agent package.
+Group: Default
+
+%description license
+license components for the ovirt-guest-agent package.
 
 
 %prep
@@ -63,7 +75,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C
-export SOURCE_DATE_EPOCH=1519407421
+export SOURCE_DATE_EPOCH=1535067645
 %autogen --disable-static --without-gdm \
 --without-kdm \
 --sysconfdir=/usr/share/defaults/ovirt-guest-agent \
@@ -78,14 +90,16 @@ export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1519407421
+export SOURCE_DATE_EPOCH=1535067645
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/doc/ovirt-guest-agent
+cp COPYING %{buildroot}/usr/share/doc/ovirt-guest-agent/COPYING
 %make_install
-## make_install_append content
+## install_append content
 mkdir -p %{buildroot}/usr/share/dbus-1/system.d/
 mv %{buildroot}/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf \
 %{buildroot}/usr/share/dbus-1/system.d/org.ovirt.vdsm.Credentials.conf
-## make_install_append end
+## install_append end
 
 %files
 %defattr(-,root,root,-)
@@ -113,11 +127,6 @@ mv %{buildroot}/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.v
 /usr/share/ovirt-guest-agent/LogoutActiveUser.py
 /usr/share/ovirt-guest-agent/OVirtAgentLogic.py
 /usr/share/ovirt-guest-agent/VirtIoChannel.py
-/usr/share/ovirt-guest-agent/__pycache__/LockActiveSession.cpython-36.pyc
-/usr/share/ovirt-guest-agent/__pycache__/LogoutActiveUser.cpython-36.pyc
-/usr/share/ovirt-guest-agent/__pycache__/OVirtAgentLogic.cpython-36.pyc
-/usr/share/ovirt-guest-agent/__pycache__/VirtIoChannel.cpython-36.pyc
-/usr/share/ovirt-guest-agent/__pycache__/hooks.cpython-36.pyc
 /usr/share/ovirt-guest-agent/container-list
 /usr/share/ovirt-guest-agent/default-logger.conf
 /usr/share/ovirt-guest-agent/default.conf
@@ -148,3 +157,7 @@ mv %{buildroot}/usr/share/defaults/ovirt-guest-agent/dbus-1/system.d/org.ovirt.v
 %files lib
 %defattr(-,root,root,-)
 /usr/lib64/security/pam_ovirt_cred.so
+
+%files license
+%defattr(-,root,root,-)
+/usr/share/doc/ovirt-guest-agent/COPYING
