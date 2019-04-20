@@ -4,7 +4,7 @@
 #
 Name     : ovirt-guest-agent
 Version  : 1.0.15
-Release  : 8
+Release  : 9
 URL      : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.15.tar.gz
 Source0  : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.15.tar.gz
 Summary  : The oVirt Guest Agent
