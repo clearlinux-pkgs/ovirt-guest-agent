@@ -4,7 +4,7 @@
 #
 Name     : ovirt-guest-agent
 Version  : 1.0.15
-Release  : 9
+Release  : 10
 URL      : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.15.tar.gz
 Source0  : https://github.com/oVirt/ovirt-guest-agent/archive/1.0.15.tar.gz
 Summary  : The oVirt Guest Agent
@@ -22,7 +22,6 @@ BuildRequires : pep8
 BuildRequires : pkgconfig(dbus-glib-1)
 BuildRequires : pkgconfig(gobject-2.0)
 BuildRequires : pkgconfig(gtk+-2.0)
-BuildRequires : python-dev
 BuildRequires : python3-dev
 BuildRequires : systemd-dev
 
@@ -74,8 +73,13 @@ services components for the ovirt-guest-agent package.
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
-export LANG=C
-export SOURCE_DATE_EPOCH=1548275831
+export LANG=C.UTF-8
+export SOURCE_DATE_EPOCH=1569436815
+export GCC_IGNORE_WERROR=1
+export CFLAGS="$CFLAGS -fno-lto "
+export FCFLAGS="$CFLAGS -fno-lto "
+export FFLAGS="$CFLAGS -fno-lto "
+export CXXFLAGS="$CXXFLAGS -fno-lto "
 %autogen --disable-static --without-gdm \
 --without-kdm \
 --sysconfdir=/usr/share/defaults/ovirt-guest-agent \
@@ -83,14 +87,14 @@ export SOURCE_DATE_EPOCH=1548275831
 make  %{?_smp_mflags}
 
 %check
-export LANG=C
+export LANG=C.UTF-8
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 make VERBOSE=1 V=1 %{?_smp_mflags} check || :
 
 %install
-export SOURCE_DATE_EPOCH=1548275831
+export SOURCE_DATE_EPOCH=1569436815
 rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr/share/package-licenses/ovirt-guest-agent
 cp COPYING %{buildroot}/usr/share/package-licenses/ovirt-guest-agent/COPYING
