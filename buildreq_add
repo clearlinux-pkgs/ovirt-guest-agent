@@ -1,6 +1,8 @@
 # This file contains additional build requirements that did not get
 # picked up automatically. One name per line, no whitespace.
-gdm-dev
-systemd-dev
-python3-dev
 Linux-PAM-dev
+gdm-dev
+nose
+pep8
+python3-dev
+systemd-dev
